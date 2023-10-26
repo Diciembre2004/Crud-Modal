@@ -2,6 +2,10 @@
 
 require '../config/database.php' 
 
+$sqlPeliculas = "SELECT p.id, p.nombre, p.descripcion, g.nombre AS genero FROM pelicula AS p 
+INNER JOIN genero AS g ON p.id_genero=g.id";
+$peliculas = $conn->query($sqlPeliculas);
+
 ?>
 
 
@@ -39,14 +43,69 @@ require '../config/database.php'
                 </tr>
             </thead>
             <tbody>
-
+                <?php while($row_pelicula = $peliculas->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?= $row_pelicula['id']; ?></td>
+                        <td><?= $row_pelicula['nombre']; ?></td>
+                        <td><?= $row_pelicula['descripcion']; ?></td>
+                        <td><?= $row_pelicula['genero']; ?></td>
+                        <td></td>
+                        <td>
+                        <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" 
+                        data-bs-target="#editaModal" data-bs-id="<?= $row_pelicula['id']; ?>" ><i 
+                        class="fa-solid fa-pen-to-square"></i>Editar</a>
+                        </td>
+                        <td>
+                        <a href="#" class="btn btn-sm btn-danger"> <i class="fa-solid fa-trash">
+                        </i>Eliminar</a>
+                        </td>
+                    </tr>
+                <?php } ?>
+                
             </tbody>
         </table>
     </div>
     <?php $sqlGenero = "SELECT id, nombre FROM genero"; 
     $generos = $conn->query($sqlGenero)
     ?>
+
     <?php include 'nuevoModal.php'; ?>
+    <?php $generos->data_seek(0); ?>
+    <?php include 'editaModal.php'; ?>
+
+    <script>
+        let editaModal = document.getElementById('editaModal')
+
+        editaModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+
+            let inputId = editaModal.querySelector('.modal-body #id')
+            let inputNombre = editaModal.querySelector('.modal-body #nombre')
+            let inputDescripcion = editaModal.querySelector('.modal-body #descripcion')
+            let inputGenero = editaModal.querySelector('.modal-body #genero')
+
+            let url = "getPelicula.php"
+            let formData = new FormData()
+            formData.append('id', id)
+
+            fetch(url, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                inputId.value = data.id
+                inputNombre.value = data.nombre
+                inputDescripcion.value = data.descripcion
+                inputGenero.value = data.id_genero
+            }).catch(err => console.log(err))
+
+        })
+
+    </script>
+
+
     <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
