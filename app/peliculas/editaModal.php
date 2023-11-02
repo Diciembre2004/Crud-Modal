@@ -1,3 +1,5 @@
+<!-- modal que edita registros -->
+
 <div class="modal fade" id="editaModal" tabindex="-1" aria-labelledby="editaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

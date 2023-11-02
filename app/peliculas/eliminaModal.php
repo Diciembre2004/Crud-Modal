@@ -1,3 +1,5 @@
+<!-- modal que elimina registros -->
+
 <div class="modal fade" id="eliminaModal" tabindex="-1" aria-labelledby="eliminaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">

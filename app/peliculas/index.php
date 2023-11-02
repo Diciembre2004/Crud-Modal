@@ -2,7 +2,7 @@
 
 session_start();
 
-require 'config/database.php';
+require '../config/database.php';
 
 $sqlPeliculas = "SELECT p.id, p.nombre, p.descripcion, g.nombre AS genero FROM pelicula AS p
 INNER JOIN genero AS g ON p.id_genero=g.id";
@@ -21,8 +21,8 @@ $dir = "posters/";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Modal</title>
 
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/all.min.css" rel="stylesheet">
+    <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../assets/css/all.min.css" rel="stylesheet">
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -32,13 +32,13 @@ $dir = "posters/";
         <h2 class="text-center">Peliculas</h2>
 
         <hr>
-
+        <!-- alerta donde mostrara errores o mensajes temporal -->
         <?php if (isset($_SESSION['msg']) && isset($_SESSION['color'])) { ?>
             <div class="alert alert-<?= $_SESSION['color']; ?> alert-dismissible fade show" role="alert">
                 <?= $_SESSION['msg']; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-
+        <!-- y aca lo borramos -->
         <?php
             unset($_SESSION['color']);
             unset($_SESSION['msg']);
@@ -81,25 +81,16 @@ $dir = "posters/";
         </table>
     </div>
 
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <p class="text-center">Desarrollado por <a href="https://github.com/mroblesdev">MRoblesDev</a></p>
-        </div>
-    </footer>
-
     <?php
     $sqlGenero = "SELECT id, nombre FROM genero";
     $generos = $conn->query($sqlGenero);
-    ?>
-
-    <?php include 'nuevoModal.php'; ?>
-
-    <?php $generos->data_seek(0); ?>
-
-    <?php include 'editaModal.php'; ?>
-    <?php include 'eliminaModal.php'; ?>
+    include 'nuevoModal.php'; 
+    $generos->data_seek(0); 
+    include 'editaModal.php'; 
+    include 'eliminaModal.php';  ?>
 
     <script>
+        // pasamos que boton presionamos
         let nuevoModal = document.getElementById('nuevoModal')
         let editaModal = document.getElementById('editaModal')
         let eliminaModal = document.getElementById('eliminaModal')
@@ -147,20 +138,22 @@ $dir = "posters/";
                     inputNombre.value = data.nombre
                     inputDescripcion.value = data.descripcion
                     inputGenero.value = data.id_genero
-                    poster.src = '<?= $dir ?>' + data.id + '.jpg'
+                    poster.src = '<?= $dir ?>' + data.id + '.jpg' //comillas simples para rutas
 
                 }).catch(err => console.log(err))
 
         })
 
         eliminaModal.addEventListener('shown.bs.modal', event => {
+            // detecta que boton se presiona
             let button = event.relatedTarget
             let id = button.getAttribute('data-bs-id')
+            // en el modal, busca el id y le pasa un valor
             eliminaModal.querySelector('.modal-footer #id').value = id
         })
     </script>
 
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
