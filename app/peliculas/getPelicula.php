@@ -1,6 +1,6 @@
 <?php
 
-require '../config/database.php';
+require 'config/database.php';
 
 $id = $conn->real_escape_string($_POST['id']);
 
@@ -10,7 +10,7 @@ $rows = $resultado->num_rows;
 
 $pelicula = [];
 
-if($rows > 0){
+if ($rows > 0) {
     $pelicula = $resultado->fetch_array();
 }
 
