@@ -6,6 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                                                        <!--importante porquepermite cargrar archivos-->
                 <form action="guarda.php" method="post" enctype="multipart/form-data">
 
                     <div class="mb-3">
@@ -22,7 +23,9 @@
                         <label for="genero" class="form-label">Género:</label>
                         <select name="genero" id="genero" class="form-select" required>
                             <option value="">Seleccionar...</option>
+                            <!-- se recorre la variable, se llama a fetch assoc que devuelve un array asociativo,un conjunto de filas -->
                             <?php while ($row_genero = $generos->fetch_assoc()) { ?>
+                                <!-- echo es para mostrar datos en pantalla, como print-->
                                 <option value="<?php echo $row_genero["id"]; ?>"><?= $row_genero["nombre"] ?></option>
                             <?php } ?>
                         </select>
